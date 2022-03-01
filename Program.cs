@@ -2,32 +2,16 @@
 using System.Collections.Generic;
 using CoreEscuela.Entidades;
 using static System.Console;
-namespace Etapa1
+namespace CoreEscuela
 {
     class Program{
         static void Main(string[] args){
-            //Llamado de la clase Escuela  (para instanciar es necesario el new)
-            Escuela escuela = new Escuela("Platzi Academy",2015,TipoEscuela.Preparatoria,ciudad:"Valladolid");
-
-            //Se Crea listas
-            List<Curso> listaCursos = new List<Curso>(){
-                new Curso(){
-                    Nombre="201",
-                    Jornada = TiposJornada.Tarde
-                },
-                new Curso(){
-                    Nombre="101",
-                    Jornada = TiposJornada.Mañana
-                },
-                new Curso(){
-                    Nombre="301",
-                    Jornada = TiposJornada.Noche
-                }
-            };
-
-            //Se agrega a la lista en la clase escuela la lista de cursos
-            escuela.Cursos= listaCursos;
-
+            EscuelaEngine escuela= new EscuelaEngine();
+            escuela.Initialize();
+            WriteLine("===============================");
+            ImprimirCursosEscuela(escuela.Escuela);
+//Refactorizacion de Codigo separandolos en diferentes clases
+/*
             List<Curso> listaCursosNew = new List<Curso>(){
                 new Curso(){
                     Nombre="401",
@@ -45,7 +29,7 @@ namespace Etapa1
 
             escuela.Cursos.AddRange(listaCursosNew);
 
-            // escuela.Cursos.remove()
+            // escuela.Cursos.remove()*/
             /*
             //Se crea un array
             Curso curso2 = new Curso(){
@@ -77,7 +61,7 @@ namespace Etapa1
                 }
             };*/
             
-
+/*
             WriteLine(escuela);
             ImprimirCursosEscuela(escuela);
             //El predicado se usa para que se pueda hacer la busqueda correspondiente devuelve un boleano
@@ -93,7 +77,7 @@ namespace Etapa1
 
             static bool Predicado(Curso curso){
                 return curso.Nombre=="301";
-            }
+            }*/
 /*
             static void ImprimirCursosWhile(Curso[] arregloCursos){
                 int contador = 0;
@@ -129,9 +113,7 @@ namespace Etapa1
             }*/
 
             static void ImprimirCursosEscuela(Escuela escuela){
-                WriteLine("==================================");
-                WriteLine("Cursos de la Escuela:");
-                WriteLine("==================================");
+                
                 /*if(escuela != null && escuela.Cursos != null){
                     foreach (Curso Curso in escuela.Cursos)
                     {
@@ -139,6 +121,10 @@ namespace Etapa1
                     }
                 }*/
                 if(escuela?.Cursos != null){
+                    WriteLine("==================================");
+                    Console.WriteLine(escuela);
+                    WriteLine("==================================");
+                    WriteLine("Cursos de la Escuela:");
                     foreach (Curso Curso in escuela.Cursos)
                     {
                         Console.WriteLine($"Id: {Curso.Id},Nombre: {Curso.Nombre}, Jornada: {Curso.Jornada} ");
