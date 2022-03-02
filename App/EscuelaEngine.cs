@@ -1,6 +1,12 @@
 using CoreEscuela.Entidades;
 namespace CoreEscuela{
-    public class EscuelaEngine{
+        //Clases selladas (sealed) No puede usarse para heredar solo se podra crear instacncias
+        /*
+        Si queremos que nuestra clase sea INSTANCIADA pero que no fuera posible **HEREDAR de ella ** debemos utilizar el tipo de clase SEALED (Clase sellada).
+
+        Si queremos que nuestra clase sea HEREDADA pero que no fuera posible INSTANCIARLA debemos utilizar el tipo de clase ABSTRACT (clase abstracta)
+        */
+        public class EscuelaEngine{
         public Escuela Escuela {get;set;}
 
         public EscuelaEngine(){
@@ -24,7 +30,26 @@ namespace CoreEscuela{
 
         private void CargarEvaluaciones()
         {
-            throw new NotImplementedException();
+           foreach (Curso curso in Escuela.Cursos)
+           {
+               foreach (Asignatura asignatura in curso.Asignatura)
+               {
+                   foreach (Alumno alumno in curso.Alumno)
+                   {
+                       Random rnd = new Random(System.Environment.TickCount);
+                       for (int i = 0; i < 5; i++)
+                       {
+                           Evaluacion ev = new Evaluacion{
+                               Asignatura=asignatura,
+                               Nombre = $"{asignatura.Nombre} Ev#{i+1}",
+                               Nota=(float)(5 * rnd.NextDouble()),
+                               Alumno=alumno
+                           };
+                           alumno.Evaluaciones.Add(ev);
+                       }
+                   }
+               }
+           }
         }
 
         private void CargarAsignaturas()

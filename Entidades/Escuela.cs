@@ -1,11 +1,12 @@
 namespace CoreEscuela.Entidades{
-    public class Escuela
+    public class Escuela:ObjetoEscuelaBase
     {
+        /* Se comentan porque en la clase ObjetoEscuelaBase ya esta heredado estos atributos
         string nombre ="";
         public string Nombre{
             get{return nombre;}
             set{nombre = value.ToUpper();}
-        }
+        }*/
 
         public int AnioDeCreacion {get; set;}
         public string Pais { get; set; }
@@ -23,9 +24,9 @@ namespace CoreEscuela.Entidades{
         }*/
 
         //Llamada del constructor por asignacion por tuplas
-        //public Escuela (string nombre,int anio) => (Nombre,AnioDeCreacion) = (nombre,anio);
+        public Escuela (string nombre,int anio) => (Nombre,AnioDeCreacion) = (nombre,anio);
 
-        public Escuela (string nombre,int anio, TipoEscuela tipo, string pais="",string ciudad="") {
+        public Escuela (string nombre,int anio, TipoEscuela tipo, string pais="",string ciudad=""):base() {
             (Nombre,AnioDeCreacion) = (nombre,anio);
             Ciudad = ciudad;
             Pais = pais;

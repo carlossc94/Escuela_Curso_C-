@@ -11,6 +11,10 @@ namespace CoreEscuela
             escuela.Initialize();
             Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela);
+
+            
+
+
 //Refactorizacion de Codigo separandolos en diferentes clases
 /*
             List<Curso> listaCursosNew = new List<Curso>(){
