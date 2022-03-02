@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreEscuela.Entidades;
+using CoreEscuela.Util;
 using static System.Console;
 namespace CoreEscuela
 {
@@ -8,7 +9,7 @@ namespace CoreEscuela
         static void Main(string[] args){
             EscuelaEngine escuela= new EscuelaEngine();
             escuela.Initialize();
-            WriteLine("===============================");
+            Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela);
 //Refactorizacion de Codigo separandolos en diferentes clases
 /*
@@ -121,10 +122,9 @@ namespace CoreEscuela
                     }
                 }*/
                 if(escuela?.Cursos != null){
-                    WriteLine("==================================");
+                    Util.Printer.WriteTitle("Datos de la Escuela");
                     Console.WriteLine(escuela);
-                    WriteLine("==================================");
-                    WriteLine("Cursos de la Escuela:");
+                    Util.Printer.WriteTitle("Cursos de la Escuela");
                     foreach (Curso Curso in escuela.Cursos)
                     {
                         Console.WriteLine($"Id: {Curso.Id},Nombre: {Curso.Nombre}, Jornada: {Curso.Jornada} ");
