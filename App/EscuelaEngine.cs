@@ -129,5 +129,22 @@ namespace CoreEscuela{
             }
 
         }
+
+        /*Lista de Objetos Polimorfica*/
+        public List<ObjetoEscuelaBase> GetObjetosEscuela(){
+            List<ObjetoEscuelaBase> listaObj = new List<ObjetoEscuelaBase>();
+            listaObj.Add(Escuela);
+            listaObj.AddRange(Escuela.Cursos);
+            foreach(var curso in Escuela.Cursos ){
+                listaObj.AddRange(curso.Asignatura);
+                listaObj.AddRange(curso.Alumno);
+
+                foreach (var alumno in curso.Alumno){
+                    listaObj.AddRange(alumno.Evaluaciones);
+                }
+            }
+            
+            return listaObj;
+        }
     }
 }

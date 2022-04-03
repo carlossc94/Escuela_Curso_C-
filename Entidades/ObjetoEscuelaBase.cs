@@ -6,7 +6,8 @@ namespace CoreEscuela.Entidades
 
         Si queremos que nuestra clase sea HEREDADA pero que no fuera posible INSTANCIARLA debemos utilizar el tipo de clase ABSTRACT (clase abstracta)
         */
-    public abstract class ObjetoEscuelaBase
+    //public abstract class ObjetoEscuelaBase
+    public class ObjetoEscuelaBase
     {
         public string Nombre { get; set; } 
         public string Id { get; set; } 

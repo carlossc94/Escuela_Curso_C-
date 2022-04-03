@@ -9,10 +9,69 @@ namespace CoreEscuela
         static void Main(string[] args){
             EscuelaEngine escuela= new EscuelaEngine();
             escuela.Initialize();
-            Printer.Beep(32000,5000,1);
+            //Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela);
+            var listaObjetos = escuela.GetObjetosEscuela();
 
+            /*Pruebas de Polimorfismo
+            Printer.WriteTitle("Pruebas de Polifomrfismo");
+
+            var alumnoTest = new Alumno { Nombre = "Claire UnderWood" };
+
+            Printer.WriteTitle("AlumnoTest");
+            WriteLine($"Alumno: {alumnoTest.Nombre}");
+            WriteLine($"Alumno: {alumnoTest.Id}");
+            WriteLine($"Alumno: {alumnoTest.GetType()}");
+
+            //El objeto padre puede adaptarse para ser un alumno, es decir sin instanciarlo se puede convertir a alumno
+            ObjetoEscuelaBase ob = alumnoTest;
+            Printer.WriteTitle("ObjetoEscuelaBase");
+            WriteLine($"Alumno: {ob.Nombre}");
+            WriteLine($"Alumno: {ob.Id}");
+            WriteLine($"Alumno: {ob.GetType()}");
+
+            var objDummy = new ObjetoEscuelaBase() { Nombre = "Frank Underwood" };
+            Printer.WriteTitle("bjDummy");
+            WriteLine($"Alumno: {objDummy.Nombre}");
+            WriteLine($"Alumno: {objDummy.Id}");
+            WriteLine($"Alumno: {objDummy.GetType()}");
+
+            //Se puede castear para decirle que el ob sera un objeto alumno
+            alumnoTest = (Alumno) ob;
+            Printer.WriteTitle("AlumnoTest");
+            WriteLine($"Alumno: {alumnoTest.Nombre}");
+            WriteLine($"Alumno: {alumnoTest.Id}");
+            WriteLine($"Alumno: {alumnoTest.GetType()}"); */ //Fin de pruebas de polmorfismo
             
+            //GENERA ERROR EN TIEMPO DE EJECUCIÓN, Un objeto instanciado como escuela base no puede castearse a ser alumno
+            /* alumnoTest = (Alumno) objDummy;
+            Printer.WriteTitle("AlumnoTest");
+            WriteLine($"Alumno: {alumnoTest.Nombre}");
+            WriteLine($"Alumno: {alumnoTest.Id}");
+            WriteLine($"Alumno: {alumnoTest.GetType()}"); */
+
+            /*Pruebas de Polimorfismo
+            var evaluacion = new Evaluacion(){Nombre = "Evaluacion 1", Nota=4.5f};
+            Printer.WriteTitle("evaluacion");
+            WriteLine($"Alumno: {evaluacion.Nombre}");
+            WriteLine($"Alumno: {evaluacion.Id}");
+            WriteLine($"Alumno: {evaluacion.Nota}");
+            WriteLine($"Alumno: {alumnoTest.GetType()}");
+
+            ob = evaluacion;
+            Printer.WriteTitle("ObjetoEscuelaBase evaluacion");
+            WriteLine($"Alumno: {ob.Nombre}");
+            WriteLine($"Alumno: {ob.Id}");
+            WriteLine($"Alumno: {ob.GetType()}");
+
+            // GENERA ERROR EN TIEMPO DE EJECUCIÓN
+            // alumnoTest = (Alumno)(ObjetoEscuelaBase)evaluacion;
+
+            if(ob is Alumno){
+                Alumno AlumnoRecuperado = (Alumno)ob;
+            }
+
+            Alumno AlumnoRecuperado2 = ob as Alumno;*/
 
 
 //Refactorizacion de Codigo separandolos en diferentes clases
