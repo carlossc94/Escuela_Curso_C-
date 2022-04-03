@@ -15,5 +15,11 @@ namespace CoreEscuela.Entidades
         public ObjetoEscuelaBase(){
             Id = Guid.NewGuid().ToString();
         }
+
+        //Sobreescribir el metodo ToString para imprimir otras caracteristicas
+        public override string ToString()
+        {
+            return $"{Nombre}, {Id}";
+        }
     }
 }
