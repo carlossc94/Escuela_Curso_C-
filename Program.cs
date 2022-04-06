@@ -11,8 +11,13 @@ namespace CoreEscuela
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela);
-            var listaObjetos = escuela.GetObjetosEscuela();
+            List<ObjetoEscuelaBase> listaObjetos = escuela.GetObjetosEscuela();
+            var listaILugar =   from obj in listaObjetos
+                                where obj is ILugar
+                                select (ILugar)obj; 
 
+            //escuela.Escuela.LimpiarLugar();
+            
             /*Pruebas de Polimorfismo
             Printer.WriteTitle("Pruebas de Polifomrfismo");
 
