@@ -220,5 +220,22 @@ namespace CoreEscuela{
             return listaAlumnos.OrderBy((al)=>al.Id).Take(cantidad).ToList();
             
         }
+
+        //Se usa IEnumerable porque se usa una interfaz generica
+        public Dictionary<string, IEnumerable<ObjetoEscuelaBase>> GetDiccionarioObjetos(){
+            var diccionario = new Dictionary<string,IEnumerable<ObjetoEscuelaBase>>();
+            /*
+            Ejemplo IEnumerable
+            
+            IEnumerable<ObjetoEscuelaBase> o = new List<ObjetoEscuelaBase>();
+            List<Curso> c = new List<Curso>();
+            o=c.Cast<ObjetoEscuelaBase>();
+            */
+
+            /*Ejemplo diccionario con clase struct*/
+            diccionario.Add(LlavesDiccionario.ESCUELA,new List<ObjetoEscuelaBase>{Escuela});
+            diccionario.Add(LlavesDiccionario.CURSOS,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
+            return diccionario;
+        }
     }
 }

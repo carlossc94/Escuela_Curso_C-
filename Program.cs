@@ -11,9 +11,32 @@ namespace CoreEscuela
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela); 
+            /*Uso de Diccionarios (clave, valor), las llaves de los diccionarios son irrepetibles*/
+            
+
+            /*Ejemplo Diccionario
+            Dictionary<int,string> diccionario = new Dictionary<int, string>();
+            diccionario.Add(10,"Carlos");
+            diccionario.Add(11,"Noemi");
+
+            foreach(var keyValPair in diccionario){
+                Console.WriteLine($"Llave: {keyValPair.Key} y valor: {keyValPair.Value}");
+            }
+
+            Printer.WriteTitle("Acceso a Diccionario");
+            WriteLine(diccionario[11]);
+
+            Printer.WriteTitle("Otro Diccionario");
+            var dic = new Dictionary<string,string>();
+            dic["luna"]= "Cuerpo celeste que gira alrededor de la tierra";
+            WriteLine(dic["luna"]);
+            dic["luna"]="Protagonista de Soy Luna";
+            WriteLine(dic["luna"]);*/
+
+
             /*Sobrecarga de objetos*/
             
-            var listaObjetos = escuela.GetObjetosEscuela(out int conteoEvaluaciones, out int conteoCursos,out int conteoAsignaturas, out int conteoAlumnos);
+            //var listaObjetos = escuela.GetObjetosEscuela(out int conteoEvaluaciones, out int conteoCursos,out int conteoAsignaturas, out int conteoAlumnos);
             
             /* USO DE LA INTERFACE
             var listaILugar =   from obj in listaObjetos
