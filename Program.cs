@@ -11,6 +11,9 @@ namespace CoreEscuela
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
             ImprimirCursosEscuela(escuela.Escuela); 
+            var dictmp = escuela.GetDiccionarioObjetos();
+
+            escuela.ImprimirDiccionario(dictmp,true);
             /*Uso de Diccionarios (clave, valor), las llaves de los diccionarios son irrepetibles*/
             
 

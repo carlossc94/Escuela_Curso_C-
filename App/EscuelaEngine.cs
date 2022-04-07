@@ -1,4 +1,5 @@
 using CoreEscuela.Entidades;
+using CoreEscuela.Util;
 namespace CoreEscuela{
         //Clases selladas (sealed) No puede usarse para heredar solo se podra crear instacncias
         /*
@@ -31,26 +32,27 @@ namespace CoreEscuela{
 #region Cargar
         private void CargarEvaluaciones()
         {
-           foreach (Curso curso in Escuela.Cursos)
-           {
+            Random rnd = new Random(System.Environment.TickCount);
+            foreach (Curso curso in Escuela.Cursos)
+            {
                foreach (Asignatura asignatura in curso.Asignatura)
                {
                    foreach (Alumno alumno in curso.Alumno)
                    {
-                       Random rnd = new Random(System.Environment.TickCount);
+                       
                        for (int i = 0; i < 5; i++)
                        {
                            Evaluacion ev = new Evaluacion{
                                Asignatura=asignatura,
                                Nombre = $"{asignatura.Nombre} Ev#{i+1}",
-                               Nota=(float)(5 * rnd.NextDouble()),
+                               Nota=(float)(Math.Round((100 * rnd.NextDouble()),2)),
                                Alumno=alumno
                            };
                            alumno.Evaluaciones.Add(ev);
                        }
                    }
                }
-           }
+            }
         }
 
         private void CargarAsignaturas()
@@ -222,8 +224,8 @@ namespace CoreEscuela{
         }
 
         //Se usa IEnumerable porque se usa una interfaz generica
-        public Dictionary<string, IEnumerable<ObjetoEscuelaBase>> GetDiccionarioObjetos(){
-            var diccionario = new Dictionary<string,IEnumerable<ObjetoEscuelaBase>>();
+        public Dictionary<LlaveDiccionario, IEnumerable<ObjetoEscuelaBase>> GetDiccionarioObjetos(){
+            var diccionario = new Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>>();
             /*
             Ejemplo IEnumerable
             
@@ -232,10 +234,72 @@ namespace CoreEscuela{
             o=c.Cast<ObjetoEscuelaBase>();
             */
 
-            /*Ejemplo diccionario con clase struct*/
-            diccionario.Add(LlavesDiccionario.ESCUELA,new List<ObjetoEscuelaBase>{Escuela});
-            diccionario.Add(LlavesDiccionario.CURSOS,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
+            /*Ejemplo diccionario con clase struct
+            diccionario.Add(LlaveDiccionario.Escuela,new List<ObjetoEscuelaBase>{Escuela});
+            diccionario.Add(LlaveDiccionario.Curso,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
+            */
+
+            /*Uso de ENUM*/
+
+            diccionario.Add(LlaveDiccionario.Escuela,new List<ObjetoEscuelaBase>{Escuela});
+            diccionario.Add(LlaveDiccionario.Curso,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
+
+            var listaEvaluacion = new List<Evaluacion>();
+            var listaAsignatura = new List<Asignatura>();
+            var listaAlumno = new List<Alumno>();
+
+            foreach (var curso in Escuela.Cursos)
+            {
+                
+                listaAsignatura.AddRange(curso.Asignatura);
+                listaAlumno.AddRange(curso.Alumno);
+                foreach(var alumno in curso.Alumno){
+                    /*uso incorrecto en el add, necesitamos ayuda de variables temporales
+                    diccionario.Add(LlaveDiccionario.Evaluacion, alumno.Evaluaciones.Cast<ObjetoEscuelaBase>());*/
+                    listaEvaluacion.AddRange(alumno.Evaluaciones);
+                }
+            }
+
+            diccionario.Add(LlaveDiccionario.Asignatura,listaAsignatura.Cast<ObjetoEscuelaBase>());
+            diccionario.Add(LlaveDiccionario.Alumno, listaAlumno.Cast<ObjetoEscuelaBase>());
+            diccionario.Add(LlaveDiccionario.Evaluacion, listaEvaluacion.Cast<ObjetoEscuelaBase>());
+
             return diccionario;
+        }
+
+        public void ImprimirDiccionario(Dictionary<LlaveDiccionario, IEnumerable<ObjetoEscuelaBase>> diccionario, bool imprEval = false){
+            foreach (var objdic in diccionario)
+            {
+                Printer.WriteTitle(objdic.Key.ToString());
+
+                foreach (var val in objdic.Value)
+                {
+                    switch (objdic.Key)
+                    {
+                        case LlaveDiccionario.Evaluacion:
+                            if (imprEval)
+                                Console.WriteLine(val);
+                            break;
+                        case LlaveDiccionario.Escuela:
+                            Console.WriteLine("Escuela: " + val);
+                            break;
+                        case LlaveDiccionario.Alumno:
+                            Console.WriteLine("Alumno: " + val.Nombre);
+                            break;
+                        case LlaveDiccionario.Curso:
+                            var curtmp = val as Curso;
+                            if(curtmp != null)
+                            {
+                                int count = curtmp.Alumno.Count;
+                                Console.WriteLine("Curso: " + val.Nombre + " Cantidad Alumnos: " + count);
+                            }
+                            break;
+                        default:
+                            Console.WriteLine(val);
+                            break;
+                    }
+                }
+            }
         }
     }
 }
