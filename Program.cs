@@ -10,14 +10,18 @@ namespace CoreEscuela
             EscuelaEngine escuela= new EscuelaEngine();
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
-            ImprimirCursosEscuela(escuela.Escuela);
-            List<ObjetoEscuelaBase> listaObjetos = escuela.GetObjetosEscuela();
+            ImprimirCursosEscuela(escuela.Escuela); 
+            /*Sobrecarga de objetos*/
+            
+            var listaObjetos = escuela.GetObjetosEscuela(out int conteoEvaluaciones, out int conteoCursos,out int conteoAsignaturas, out int conteoAlumnos);
+            
+            /* USO DE LA INTERFACE
             var listaILugar =   from obj in listaObjetos
                                 where obj is ILugar
-                                select (ILugar)obj; 
+                                select (ILugar)obj; */
 
             //escuela.Escuela.LimpiarLugar();
-            
+
             /*Pruebas de Polimorfismo
             Printer.WriteTitle("Pruebas de Polifomrfismo");
 

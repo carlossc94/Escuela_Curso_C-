@@ -28,6 +28,7 @@ namespace CoreEscuela{
             CargarEvaluaciones();  
         }
 
+#region Cargar
         private void CargarEvaluaciones()
         {
            foreach (Curso curso in Escuela.Cursos)
@@ -68,24 +69,6 @@ namespace CoreEscuela{
                 curso.Asignatura = new List<Asignatura>();
                 curso.Asignatura.AddRange(listaAsignaturas);
             }
-        }
-
-        private List<Alumno> GenerarAlumnosRandom(int cantidad)
-        {
-            string[] nombre1 = {"Alma","Bererenice","Carmen","David","Erick","Alvaro","Donald","Nicolas","Marco","Elena"};
-            string[] nombre2 = {"Martin","Noemi","Araceli","Joaquin","Alejandro","Alejandra","Luis","Pedro","Ramon","Beatriz"};
-            string[] Apellido1 = {"Ruiz", "Sarmiento","Toledo","Herrera","Soberanis","Eugenio","Maldonado","Perez","Torres","Martinez"};
-            string[] Apellido2 = {"Higuain","Polanco","Chan","Cetina","Lopez","Ramirez","Contreras","Fabela","Nuñez","Espadas"};
-
-            //Lenguaje integrado de Consultas (Linq)
-            IEnumerable<Alumno> listaAlumnos = from n1 in nombre1 
-                            from n2 in nombre2
-                            from a1 in Apellido1
-                            from a2 in Apellido2 
-                            select new Alumno {Nombre=$"{n1} {n2} {a1} {a2}"};
-            
-            return listaAlumnos.OrderBy((al)=>al.Id).Take(cantidad).ToList();
-            
         }
 
         private void CargarCursos()
@@ -129,9 +112,10 @@ namespace CoreEscuela{
             }
 
         }
+#endregion
 
-        /*Lista de Objetos Polimorfica*/
-        public List<ObjetoEscuelaBase> GetObjetosEscuela(){
+        /*Lista de Objetos Polimorfica old*/
+/*        public List<ObjetoEscuelaBase> GetObjetosEscuela(){
             List<ObjetoEscuelaBase> listaObj = new List<ObjetoEscuelaBase>();
             listaObj.Add(Escuela);
             listaObj.AddRange(Escuela.Cursos);
@@ -145,6 +129,96 @@ namespace CoreEscuela{
             }
             
             return listaObj;
+        }*/
+
+        /*Returno con Tuplas
+        public (List<ObjetoEscuelaBase>, int) GetObjetosEscuela(
+            bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            int conteoEvaluaciones=0;
+            List<ObjetoEscuelaBase> listaObj = new List<ObjetoEscuelaBase>();
+            listaObj.Add(Escuela);
+            if(traeCursos)
+                listaObj.AddRange(Escuela.Cursos);
+            
+            foreach(var curso in Escuela.Cursos ){
+                if(traeAsignaturas)
+                    listaObj.AddRange(curso.Asignatura);
+                
+                if(traeAlumnos)
+                    listaObj.AddRange(curso.Alumno);
+
+                if(traeEvaluaciones){
+                    foreach (var alumno in curso.Alumno){
+                        listaObj.AddRange(alumno.Evaluaciones);
+                        conteoEvaluaciones += alumno.Evaluaciones.Count();
+                    }
+                }
+            }
+            
+            return (listaObj,conteoEvaluaciones);
+        }*/
+        /*Retorno con parametros de salida*/
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(out int conteoEvaluaciones,out int conteoCursos, out int conteoAsignaturas,out int conteoAlumnos,
+            bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            conteoEvaluaciones=conteoCursos=conteoAsignaturas=conteoAlumnos=0;
+            List<ObjetoEscuelaBase> listaObj = new List<ObjetoEscuelaBase>();
+            listaObj.Add(Escuela);
+            if(traeCursos)
+                listaObj.AddRange(Escuela.Cursos);
+            conteoCursos=Escuela.Cursos.Count;
+
+            foreach(var curso in Escuela.Cursos ){
+                if(traeAsignaturas)
+                    listaObj.AddRange(curso.Asignatura);
+                conteoAsignaturas = curso.Asignatura.Count;
+                if(traeAlumnos)
+                    listaObj.AddRange(curso.Alumno);
+                conteoAlumnos=curso.Alumno.Count;
+                if(traeEvaluaciones){
+                    foreach (var alumno in curso.Alumno){
+                        listaObj.AddRange(alumno.Evaluaciones);
+                        conteoEvaluaciones += alumno.Evaluaciones.Count;
+                    }
+                }
+            }
+            
+            return listaObj.AsReadOnly();
+        }
+
+        //SOBRECARGA de METODOS
+
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            return GetObjetosEscuela(out int dummy,out dummy, out dummy, out dummy);
+        }
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(out int conteoEvaluaciones,
+            bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            return GetObjetosEscuela(out conteoEvaluaciones,out int dummy, out dummy, out dummy);
+        }
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(out int conteoEvaluaciones,out int conteoCursos,
+            bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            return GetObjetosEscuela(out conteoEvaluaciones,out conteoCursos, out int dummy, out dummy);
+        }
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetosEscuela(out int conteoEvaluaciones,out int conteoCursos, out int conteoAsignaturas,
+            bool traeEvaluaciones = true,bool traeAlumnos= true, bool traeAsignaturas=true,bool traeCursos=true){
+            return GetObjetosEscuela(out conteoEvaluaciones,out conteoCursos, out conteoAsignaturas, out int dummy);
+        }
+
+        private List<Alumno> GenerarAlumnosRandom(int cantidad)
+        {
+            string[] nombre1 = {"Alma","Bererenice","Carmen","David","Erick","Alvaro","Donald","Nicolas","Marco","Elena"};
+            string[] nombre2 = {"Martin","Noemi","Araceli","Joaquin","Alejandro","Alejandra","Luis","Pedro","Ramon","Beatriz"};
+            string[] Apellido1 = {"Ruiz", "Sarmiento","Toledo","Herrera","Soberanis","Eugenio","Maldonado","Perez","Torres","Martinez"};
+            string[] Apellido2 = {"Higuain","Polanco","Chan","Cetina","Lopez","Ramirez","Contreras","Fabela","Nuñez","Espadas"};
+
+            //Lenguaje integrado de Consultas (Linq)
+            IEnumerable<Alumno> listaAlumnos = from n1 in nombre1 
+                            from n2 in nombre2
+                            from a1 in Apellido1
+                            from a2 in Apellido2 
+                            select new Alumno {Nombre=$"{n1} {n2} {a1} {a2}"};
+            
+            return listaAlumnos.OrderBy((al)=>al.Id).Take(cantidad).ToList();
+            
         }
     }
 }
