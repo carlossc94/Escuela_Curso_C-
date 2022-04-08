@@ -27,6 +27,47 @@ namespace CoreEscuela
             var listaPromedioAlumnoXAsignatura= Reporteador.GetPromedioAlumnoXAsignatura();
             var listaMejoresPromedioAlumnoXAsignatura= Reporteador.GetBestAverageStudentXAssesment(15);
             ImprimirCursosEscuela(escuela.Escuela); 
+            Printer.WriteTitle("Captura de una evaluacion por Consola");
+            var newEval = new Evaluacion();
+            string nombre;
+            string notaString;
+
+            WriteLine("Ingrese el nombre de la evaluacion");
+            Printer.PresioneEnter();
+            nombre= Console.ReadLine();
+            if(string.IsNullOrEmpty(nombre)){
+                Printer.WriteTitle("El nombre de la evaluacion no puede estar vacio");
+                WriteLine("Saliendo del programa");
+            }else{
+                newEval.Nombre=nombre.ToLower();
+                WriteLine("El nombre de la evaluacion ha sido ingresado correctamente");
+            }
+
+            WriteLine("Ingrese la nota de la evaluacion");
+            Printer.PresioneEnter();
+            notaString = Console.ReadLine();
+            if(string.IsNullOrEmpty(notaString)){
+                Printer.WriteTitle("El valor de la nota no puede estar vacio");
+                WriteLine("Saliendo del programa");
+            }else{
+                try{
+                    newEval.Nota=float.Parse(notaString);
+                    if(newEval.Nota < 0 || newEval.Nota >100){
+                        throw new ArgumentOutOfRangeException ("El rango de las notas debe ser entre 0 y 5");
+                    }
+                    WriteLine("La nota de la evaluacion ha sido ingresado correctamente");
+                }catch(ArgumentOutOfRangeException ex){
+                    Printer.WriteTitle(ex.Message);
+                    WriteLine("Saliendo del programa");
+                }
+                catch(Exception ex){
+                    Printer.WriteTitle("El valor de la nota no es un numero");
+                    WriteLine("Saliendo del programa");
+                }
+                finally{
+                    
+                }
+            }
             /*Datos con Diccionarios
             ImprimirCursosEscuela(escuela.Escuela); 
             var dictmp = escuela.GetDiccionarioObjetos();
@@ -39,21 +80,7 @@ namespace CoreEscuela
             Dictionary<int,string> diccionario = new Dictionary<int, string>();
             diccionario.Add(10,"Carlos");
             diccionario.Add(11,"Noemi");
-
-            foreach(var keyValPair in diccionario){
-                Console.WriteLine($"Llave: {keyValPair.Key} y valor: {keyValPair.Value}");
-            }
-
-            Printer.WriteTitle("Acceso a Diccionario");
-            WriteLine(diccionario[11]);
-
-            Printer.WriteTitle("Otro Diccionario");
-            var dic = new Dictionary<string,string>();
-            dic["luna"]= "Cuerpo celeste que gira alrededor de la tierra";
-            WriteLine(dic["luna"]);
-            dic["luna"]="Protagonista de Soy Luna";
-            WriteLine(dic["luna"]);*/
-
+ 
 
             /*Sobrecarga de objetos*/
             

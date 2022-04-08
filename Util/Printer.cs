@@ -20,5 +20,9 @@ namespace CoreEscuela.Util{
                 Console.Beep(hz,tiempo);
             }
         }
+
+        public static void PresioneEnter(){
+            Console.WriteLine("Presione ENTER para continuar");
+        }
     }
 }
