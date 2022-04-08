@@ -15,7 +15,7 @@ namespace CoreEscuela.App
             IEnumerable<Evaluacion> rta;
             //Si no encuentra el valor trae un valor por defecto del tipo de la variable
             //var lista =_diccionario.GetValueOrDefault(LlaveDiccionario.Escuela);
-            if(_diccionario.TryGetValue(LlaveDiccionario.Escuela, out IEnumerable<ObjetoEscuelaBase> lista)){
+            if(_diccionario.TryGetValue(LlaveDiccionario.Evaluacion, out IEnumerable<ObjetoEscuelaBase> lista)){
                 return lista.Cast<Evaluacion>();
             }else{
                 return new List<Evaluacion>();
@@ -32,6 +32,70 @@ namespace CoreEscuela.App
             }else{
                 return new List<Escuela>();
             }
+        }
+
+        public IEnumerable<String> GetListaAsignatura(out IEnumerable<Evaluacion> listaEvaluacion){
+            listaEvaluacion = GetListaEvaluaciones();
+        
+            //LinQ donde hay where select
+            //Revisar Comparer y comparison
+           return (from Evaluacion ev in listaEvaluacion
+                    where ev.Nota >= 40
+                    select ev.Asignatura.Nombre).Distinct();
+        }
+
+        public IEnumerable<String> GetListaAsignatura(){
+            return GetListaAsignatura(out var dummy);
+        }
+
+        public Dictionary<string,IEnumerable<Evaluacion>> GetDiccionarioEvaluaxAsignatura(){
+            var dictaRta = new Dictionary<string,IEnumerable<Evaluacion>>();
+
+            var listaAsignatura = GetListaAsignatura(out var listaEval);
+
+            foreach (var asignatura in listaAsignatura)
+            {
+                var evalAsig = from eval in listaEval
+                                where eval.Asignatura.Nombre == asignatura 
+                                select eval;
+
+                dictaRta.Add(asignatura,evalAsig);
+            }
+
+
+            return dictaRta;
+        }
+
+        public Dictionary<string,IEnumerable<Object>> GetPromedioAlumnoXAsignatura(){
+            var rta = new Dictionary<string,IEnumerable<Object>>();
+            var dicEvalXAsig= GetDiccionarioEvaluaxAsignatura();
+            foreach (var asigConEval in dicEvalXAsig)
+            {
+                //LinQ se puede devolver un objeto compuesto
+                var promedioAlumnos = from eval in asigConEval.Value
+                            group eval by new{eval.Alumno.Id, eval.Alumno.Nombre }
+                            into grupoEvalAlumno
+                            select new AlumnoPromedio
+                            {   
+                                AlumnoId = grupoEvalAlumno.Key.Id,
+                                AlumnoNombre = grupoEvalAlumno.Key.Nombre,
+                                Promedio = grupoEvalAlumno.Average(evaluacion => evaluacion.Nota)
+                            };
+
+                rta.Add(asigConEval.Key,promedioAlumnos);
+                /*
+                var dummy = from eval in asigConEval.Value
+                group eval by eval.Alumno.Id 
+                            into grupoEvalAlumno
+                            select new 
+                            {   eval.Alumno.Id,
+                                AlumnoNombre = eval.Alumno.Nombre,
+                                EvalNombre = eval.Nombre,
+                                eval.Nota
+                            };
+                */
+            }
+            return rta;
         }
     }
 }

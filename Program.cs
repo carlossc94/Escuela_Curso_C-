@@ -21,6 +21,10 @@ namespace CoreEscuela
             //Printer.Beep(32000,5000,1);
             Printer.WriteTitle("Bienvenidos a la Escuela");
             var Reporteador = new Reporteador(escuela.GetDiccionarioObjetos());
+            var evalList = Reporteador.GetListaEvaluaciones();
+            var asigList = Reporteador.GetListaAsignatura();
+            var listaEvalXAsig = Reporteador.GetDiccionarioEvaluaxAsignatura();
+            var listaPromedioAlumnoXAsignatura= Reporteador.GetPromedioAlumnoXAsignatura();
             /*Datos con Diccionarios
             ImprimirCursosEscuela(escuela.Escuela); 
             var dictmp = escuela.GetDiccionarioObjetos();
