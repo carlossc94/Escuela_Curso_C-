@@ -25,6 +25,8 @@ namespace CoreEscuela
             var asigList = Reporteador.GetListaAsignatura();
             var listaEvalXAsig = Reporteador.GetDiccionarioEvaluaxAsignatura();
             var listaPromedioAlumnoXAsignatura= Reporteador.GetPromedioAlumnoXAsignatura();
+            var listaMejoresPromedioAlumnoXAsignatura= Reporteador.GetBestAverageStudentXAssesment(15);
+            ImprimirCursosEscuela(escuela.Escuela); 
             /*Datos con Diccionarios
             ImprimirCursosEscuela(escuela.Escuela); 
             var dictmp = escuela.GetDiccionarioObjetos();
