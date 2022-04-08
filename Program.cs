@@ -7,6 +7,14 @@ namespace CoreEscuela
 {
     class Program{
         static void Main(string[] args){
+            //Evantos puede tener varios delegados 
+                //Se agrega primer delegado
+            AppDomain.CurrentDomain.ProcessExit += AccionEventoExit;
+                //Otro metodo de agregar delegado
+            AppDomain.CurrentDomain.ProcessExit += (o,s)=> Printer.Beep(2000,1000,1);
+                //Quitar delegados ya implementados
+            AppDomain.CurrentDomain.ProcessExit -= AccionEventoExit;
+            
             EscuelaEngine escuela= new EscuelaEngine();
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
@@ -229,6 +237,13 @@ namespace CoreEscuela
                     }
                 }
             }
+        }
+
+        private static void AccionEventoExit(object? sender, EventArgs e)
+        {
+            Printer.WriteTitle("Saliendo del programa");
+            Printer.Beep(1000,cantidad:3);
+            Printer.WriteTitle("Salio del programa");
         }
     }
 }
