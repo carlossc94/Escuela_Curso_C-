@@ -1,6 +1,6 @@
 using CoreEscuela.Entidades;
 using CoreEscuela.Util;
-namespace CoreEscuela{
+namespace CoreEscuela.App {
         //Clases selladas (sealed) No puede usarse para heredar solo se podra crear instacncias
         /*
         Si queremos que nuestra clase sea INSTANCIADA pero que no fuera posible **HEREDAR de ella ** debemos utilizar el tipo de clase SEALED (Clase sellada).

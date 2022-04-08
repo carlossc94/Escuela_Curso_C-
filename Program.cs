@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreEscuela.App;
 using CoreEscuela.Entidades;
 using CoreEscuela.Util;
 using static System.Console;
@@ -14,14 +15,17 @@ namespace CoreEscuela
             AppDomain.CurrentDomain.ProcessExit += (o,s)=> Printer.Beep(2000,1000,1);
                 //Quitar delegados ya implementados
             AppDomain.CurrentDomain.ProcessExit -= AccionEventoExit;
-            
+
             EscuelaEngine escuela= new EscuelaEngine();
             escuela.Initialize();
             //Printer.Beep(32000,5000,1);
+            Printer.WriteTitle("Bienvenidos a la Escuela");
+            var Reporteador = new Reporteador(escuela.GetDiccionarioObjetos());
+            /*Datos con Diccionarios
             ImprimirCursosEscuela(escuela.Escuela); 
             var dictmp = escuela.GetDiccionarioObjetos();
 
-            escuela.ImprimirDiccionario(dictmp,true);
+            escuela.ImprimirDiccionario(dictmp,true);*/
             /*Uso de Diccionarios (clave, valor), las llaves de los diccionarios son irrepetibles*/
             
 
